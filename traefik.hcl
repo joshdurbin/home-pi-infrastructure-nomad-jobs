@@ -14,14 +14,17 @@ job "traefik" {
   }
 
   group "traefik" {
+
     count = 2
 
     task "traefik" {
       driver = "docker"
 
       config {
-        image        = "traefik:v2.3.1"
+        image        = "traefik:latest"
         network_mode = "host"
+
+//        cpu_hard_limit = true
 
         volumes = [
           "local/traefik.toml:/etc/traefik/traefik.toml",
@@ -43,7 +46,7 @@ job "traefik" {
     address = ":8081"
 
 [log]
-  level = "DEBUG"
+  level = "INFO"
 
 [accessLog]
   format = "json"
@@ -58,7 +61,6 @@ job "traefik" {
         buckets = [0.1,0.3,0.5,1.0,1.5,5.0]
         entryPoint = "traefik"
 
-# Enable Consul Catalog configuration backend.
 [providers.consulCatalog]
     prefix           = "traefik"
     exposedByDefault = false
@@ -72,8 +74,8 @@ EOF
       }
 
       resources {
-        cpu    = 100
-        memory = 128
+        cpu    = 256
+        memory = 256
 
         network {
 

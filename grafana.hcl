@@ -2,6 +2,12 @@ job "grafana" {
   datacenters = "pi"
   type        = "service"
 
+  constraint {
+    attribute = "${meta.machine_type}"
+    operator  = "="
+    value     = "pi4b"
+  }
+
   group "grafana" {
     count = 1
 
@@ -16,7 +22,7 @@ job "grafana" {
       driver = "docker"
 
       config {
-        image = "grafana/grafana"
+        image = "grafana/grafana:7.3.4"
 
         port_map {
           grafana_port = 3000
@@ -24,7 +30,7 @@ job "grafana" {
       }
 
       resources {
-        cpu    = 100
+        cpu    = 128
         memory = 128
         network {
           port "grafana_port" {

@@ -1,4 +1,4 @@
-job "cloudflard" {
+job "redis" {
 
   datacenters = "pi"
   type        = "service"
@@ -9,32 +9,41 @@ job "cloudflard" {
     value     = "pi4b"
   }
 
-  group "cloudflard" {
+  group "redis" {
 
     count = 1
 
-    task "cloudflared" {
+    task "redis" {
       driver = "docker"
 
       config {
-        image = "visibilityspots/cloudflared"
+        image = "redis:latest"
+
+//        cpu_hard_limit = true
 
         port_map {
-          dns = 5054
+          redis = 6379
+        }
+
+        logging {
+          type = "fluentd"
+          config {
+            fluentd-address = "${attr.unique.network.ip-address}:24224"
+          }
         }
       }
 
       resources {
         cpu    = 256
-        memory = 128
+        memory = 512
         network {
-          port "dns" {}
+          port "redis" {}
         }
       }
 
       service {
-        name = "cloudflared"
-        port = "dns"
+        name = "redis"
+        port = "redis"
 
         check {
           name     = "alive"

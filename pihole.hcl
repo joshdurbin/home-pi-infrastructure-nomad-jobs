@@ -3,6 +3,12 @@ job "pihole" {
   datacenters = "pi"
   type        = "service"
 
+  constraint {
+    attribute = "${meta.machine_type}"
+    operator  = "="
+    value     = "pi4b"
+  }
+
   group "pihole" {
 
     count = 1
@@ -20,6 +26,8 @@ job "pihole" {
       config {
         image = "pihole/pihole:latest"
 
+//        cpu_hard_limit = true
+
         port_map {
           dns = 53
           web = 80
@@ -31,8 +39,8 @@ job "pihole" {
       }
 
       resources {
-        cpu    = 100
-        memory = 128
+        cpu    = 512
+        memory = 256
         network {
           port "dns" {
 

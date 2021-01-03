@@ -30,6 +30,8 @@ job "doods" {
           web = 8080
         }
 
+//        cpu_hard_limit = true
+
         devices = [
           {
             host_path = "/dev/bus/usb"
@@ -71,7 +73,7 @@ EOH
       }
 
       resources {
-        cpu    = 1000
+        cpu    = 1024
         memory = 256
         network {
           port "web" {

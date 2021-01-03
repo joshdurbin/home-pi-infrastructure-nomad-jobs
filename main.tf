@@ -22,10 +22,15 @@ resource "nomad_job" "doods" {
   jobspec = file("${path.module}/doods.hcl")
 }
 
-resource "nomad_job" "atlantis" {
-  jobspec = file("${path.module}/atlantis.hcl")
+resource "nomad_job" "loki" {
+  jobspec = file("${path.module}/loki.hcl")
 }
 
-resource "nomad_job" "kapacitor" {
-  jobspec = file("${path.module}/kapacitor.hcl")
+//resource "nomad_job" "redis" {
+//  jobspec = file("${path.module}/redis.hcl")
+//}
+//
+// see https://blog.kwojo314.com/centralized-logging-on-nomad/
+resource "nomad_job" "fluentbit" {
+  jobspec = file("${path.module}/fluentbit.hcl")
 }
